@@ -1,5 +1,5 @@
 import express from "express";
-import { aggregateQuery, getAllCustomers } from "./services/queries";
+import { aggregateCandidateQuery, aggregateCustomerQuery, getAllCustomers } from "./services/queries";
 const app = express();
 
 app.get("/", async (req, res) => {
@@ -16,13 +16,22 @@ app.get("/customers", async (req, res) => {
 });
 
 app.get("/query", async (req, res) => {
-    try {
-      const result = await aggregateQuery();
-      res.json(result);
-    } catch (err) {
-      res.status(500).send("Error fetching customers");
-    }
-  });
+  try {
+    const result = await aggregateCustomerQuery();
+    res.json(result);
+  } catch (err) {
+    res.status(500).send("Error fetching customers");
+  }
+});
+
+app.get("/query2", async (req, res) => {
+  try {
+    const result = await aggregateCandidateQuery();
+    res.json(result);
+  } catch (err) {
+    res.status(500).send("Error fetching candidates");
+  }
+});
 
 app.listen(3000, () => {
   console.log("🚀 Server running on http://localhost:3000");

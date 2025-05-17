@@ -9,7 +9,7 @@ export const getAllCustomers = async () => {
   }
 };
 
-export const aggregateQuery = async () => {
+export const aggregateCustomerQuery = async () => {
   try {
     const result = await db
       .collection("customers")
@@ -22,11 +22,7 @@ export const aggregateQuery = async () => {
             age: 1,
             // Adding new custom field which returns boolean value based on condition
             isAgeExpired: {
-              $cond: {
-                if: { $gte: ["$age", 30] },
-                then: true,
-                else: false,
-              },
+              $gte: ["$age", 30],
             },
           },
         },
@@ -40,15 +36,48 @@ export const aggregateQuery = async () => {
         {
           $sort: { age: 1 },
         },
-        {
-          $limit: 2,
-        },
         // {
         //   $group: {
         //     _id: "$city",
         //     totalAge:{$sum:"$age"}
         //   },
         // },
+      ])
+      .toArray();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const aggregateCandidateQuery = async () => {
+  try {
+    const result = await db
+      .collection("candidates")
+      .aggregate([
+        {
+          /*
+            turn this: 
+             {
+                "name": "Anita",
+                "skills": ["Python", "Django", "MongoDB"]
+             }
+            into this:
+             {
+                "name": "Anita",
+                "skills": "Python"
+             }
+                 {
+                "name": "Anita",
+                "skills": "Django"
+             }
+                 {
+                "name": "Anita",
+                "skills": "MongoDB"
+             }
+        */
+          $unwind: "$skills",
+        },
       ])
       .toArray();
     return result;
