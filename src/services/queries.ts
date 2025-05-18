@@ -1,4 +1,5 @@
 import { db } from "../db";
+import { ordersWithCustomerDetailsPipeline, productInfoPipeline } from "../pipelines/order";
 
 export const getAllCustomers = async () => {
   try {
@@ -79,6 +80,19 @@ export const aggregateCandidateQuery = async () => {
           $unwind: "$skills",
         },
       ])
+      .toArray();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+export const aggregateOrderQuery = async () => {
+  try {
+    const result = await db
+      .collection("orders")
+      .aggregate(productInfoPipeline)
       .toArray();
     return result;
   } catch (error) {

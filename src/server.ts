@@ -1,5 +1,5 @@
 import express from "express";
-import { aggregateCandidateQuery, aggregateCustomerQuery, getAllCustomers } from "./services/queries";
+import { aggregateCandidateQuery, aggregateCustomerQuery, aggregateOrderQuery, getAllCustomers } from "./services/queries";
 const app = express();
 
 app.get("/", async (req, res) => {
@@ -30,6 +30,15 @@ app.get("/query2", async (req, res) => {
     res.json(result);
   } catch (err) {
     res.status(500).send("Error fetching candidates");
+  }
+});
+
+app.get("/query3", async (req, res) => {
+  try {
+    const result = await aggregateOrderQuery();
+    res.json(result);
+  } catch (err) {
+    res.status(500).send("Error fetching orders");
   }
 });
 
