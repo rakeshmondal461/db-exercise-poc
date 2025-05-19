@@ -5,13 +5,15 @@ export const accoperatorPipeline = [
   {
     $group: {
       _id: "$category",
-      // Minimum and Maximum 
+      // Collects values into an array for each group.
+      // products: { $push: "$name" },
+      // Minimum and Maximum
       //   cheapest: { $min: "$price" },
       //   mostexpensive: { $max: "$price" },
 
       // Returns the first or last value in a group
-      first: { $first: "$price" },
-      last: { $last: "$price" },
+      //   first: { $first: "$price" },
+      //   last: { $last: "$price" },
     },
   },
 ];
