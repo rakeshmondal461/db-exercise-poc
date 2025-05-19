@@ -1,5 +1,7 @@
 import { db } from "../db";
+import { testPipeLine } from "../pipelines/abd";
 import { ordersWithCustomerDetailsPipeline, productInfoPipeline } from "../pipelines/order";
+import { accoperatorPipeline } from "../pipelines/products";
 
 export const getAllCustomers = async () => {
   try {
@@ -93,6 +95,33 @@ export const aggregateOrderQuery = async () => {
     const result = await db
       .collection("orders")
       .aggregate(productInfoPipeline)
+      .toArray();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+export const aggregateAbdTestQuery = async () => {
+  try {
+    const result = await db
+      .collection("abd")
+      .aggregate(testPipeLine)
+      .toArray();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+
+export const aggregateProductsQuery = async () => {
+  try {
+    const result = await db
+      .collection("products")
+      .aggregate(accoperatorPipeline)
       .toArray();
     return result;
   } catch (error) {

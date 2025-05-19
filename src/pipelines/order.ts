@@ -40,4 +40,10 @@ export const productInfoPipeline = [
       items: { $push: "$items" },
     },
   },
+  {
+    // Add new Field
+    $set: {
+      isHighAmount: { $gt: ["$amount", 100] },
+    },
+  },
 ];
